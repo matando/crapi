@@ -4,7 +4,7 @@ on:
       - master
       - develop
 
-#env:
+##env:
 #  ACTIVE_API_URL: "<ACTIVE_API_URL>"
 #  ACTIVE_REGISTRY_URL: "<ACTIVE_REGISTRY_URL>"
 #  ACTIVE_BACKEND_URI: "<ACTIVE_BACKEND_URI>"
