@@ -1,54 +1,54 @@
+name: Build and Test crAPI
 on:
   push:
-    branches:
-      - master
-      - develop
-      - main
-##env:
-#  ACTIVE_API_URL: "<ACTIVE_API_URL>"
-#  ACTIVE_REGISTRY_URL: "<ACTIVE_REGISTRY_URL>"
-#  ACTIVE_BACKEND_URI: "<ACTIVE_BACKEND_URI>"
+  workflow_dispatch:
 
+env:
+  TEST_GROUP_ID: 62f5921c-d200-4f6f-a104-29674ad30a94
 
 jobs:
-  scan:
-    runs-on: ubuntu-latest
-
+  build-and-test-images:
+    runs-on: ubuntu-20.04
+    environment: development
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Run VAmPI
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build images
+        run: ./deploy/docker/build-all.sh
+        env:
+          DOCKER_REPO: location
+          VERSION: testing
+      - name: Launch crAPI
         run: docker compose up -d
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Stage data for testing
+        run: |
+          npm install
+          node .
+        working-directory: baseline-script
+        env:
+          USERS_TO_SIMULATE: 1
 
-      - name: Test VAmPI
-        run: sleep 5 && curl http://localhost:5002/ --retry 10 --retry-delay 1
-
-      - name: Docker login
+      - name: Docker login for Noname CLI
         uses: docker/login-action@v1
         with:
-          registry:  ${{ env.ACTIVE_REGISTRY_URL }}
-          username: ${{ secrets.ACTIVE_REGISTRY_USER }}
+          registry: ${{ vars.ACTIVE_REGISTRY_URL }}
+          username: ${{ vars.ACTIVE_REGISTRY_USER }}
           password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
 
       - name: Active Testing Scan
         run: >
           docker run
           --add-host=host.docker.internal:host-gateway
-          -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config_auth.json
-          -e ACTIVE_BACKEND_URI=${{ env.ACTIVE_BACKEND_URI }}
+          -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json
+          -e ACTIVE_OVERRIDES_FILE_PATH=/noname/overrides.json
           -v $(pwd)/noname:/noname
-          ${{ env.ACTIVE_REGISTRY_URL }}/active-cli:$(curl -k ${{env.ACTIVE_API_URL}}/backend/version) scan
-          --api-url=${{ env.ACTIVE_API_URL }}
+          ${{vars.ACTIVE_REGISTRY_URL}}/active-cli:$(curl -k ${{vars.ACTIVE_API_URL}}/backend/version) scan
+          --api-url=${{ vars.ACTIVE_API_URL }}
           --api-token=${{ secrets.ACTIVE_API_TOKEN }}
-          --test-group-id=<ACTIVE_TEST_GROUP_ID>
+          --test-group-id=${{ env.TEST_GROUP_ID }}
           --branch-name=${{ github.head_ref || github.ref_name }}
-          --severity-threshold=medium
-
-  deploy:
-    needs: scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo
-        run: echo Security scan passed, deploying to production
-
+          --severity-threshold=none
