@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_GROUP_ID: 62f5921c-d200-4f6f-a104-29674ad30a94
+  TEST_GROUP_ID: 74b26c81-5e98-4d5e-b36a-565630c768f7
 
 jobs:
   build-and-test-images:
@@ -19,7 +19,7 @@ jobs:
           DOCKER_REPO: location
           VERSION: testing
       - name: Launch crAPI
-        run: docker compose up -d
+        run: docker compose up -d -f ./deploy/docker/docker-compose.yml
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
