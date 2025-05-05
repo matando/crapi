@@ -19,7 +19,7 @@ jobs:
           DOCKER_REPO: location
           VERSION: testing
       - name: Launch crAPI
-        run: docker compose up -d -f ./deploy/docker/docker-compose.yml
+        run: docker compose up -d
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
