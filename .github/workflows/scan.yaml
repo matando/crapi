@@ -39,10 +39,9 @@ jobs:
           password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
 
       - name: Active Testing Scan
-        run: >
-          run:
-            pwd
-            cat /noname/active-config.json
+        run: 
+          pwd
+          cat /noname/active-config.json
           docker run
           --add-host=host.docker.internal:host-gateway
           -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json
