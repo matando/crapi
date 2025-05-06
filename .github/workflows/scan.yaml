@@ -11,33 +11,32 @@ jobs:
     runs-on: ubuntu-22.04
     environment: development
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#      - name: Build images
-#        run: ./deploy/docker/build-all.sh
-#        env:
-#          DOCKER_REPO: location
-#          VERSION: testing
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build images
+        run: ./deploy/docker/build-all.sh
+        env:
+          DOCKER_REPO: location
+          VERSION: testing
 #      - name: Launch crAPI
 #        run: docker compose -f ./deploy/docker/docker-compose.yml up -d
 #      - name: Setup Node
 #        uses: actions/setup-node@v3
 #        with:
 #          node-version: 18
-#      - name: Stage data for testing
-#        run: |
-#          npm install
-#          node .
-#        working-directory: baseline-script
-#        env:
-#          USERS_TO_SIMULATE: 1
-#
-#      - name: Docker login for Noname CLI
-#        uses: docker/login-action@v1
-#        with:
-#          registry: ${{ vars.ACTIVE_REGISTRY_URL }}
-#          username: ${{ vars.ACTIVE_REGISTRY_USER }}
-#          password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
+      - name: Stage data for testing
+        run: |
+          npm install
+          node .
+        working-directory: baseline-script
+        env:
+          USERS_TO_SIMULATE: 1
+      - name: Docker login for Noname CLI
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ vars.ACTIVE_REGISTRY_URL }}
+          username: ${{ vars.ACTIVE_REGISTRY_USER }}
+          password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
 
       - name: Active Testing Scan
         run: >
