@@ -37,11 +37,11 @@ jobs:
           registry: ${{ vars.ACTIVE_REGISTRY_URL }}
           username: ${{ secrets.ACTIVE_REGISTRY_USER }}
           password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
-
-      - name: Active Testing Scan
-        run: 
+      - name: troubleshoot
           pwd
           cat /noname/active-config.json
+      - name: Active Testing Scan
+        run: 
           docker run
           --add-host=host.docker.internal:host-gateway
           -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json
