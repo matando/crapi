@@ -34,7 +34,7 @@ jobs:
       - name: Docker login for Noname CLI
         uses: docker/login-action@v1
         with:
-          registry: ${{ env.ACTIVE_REGISTRY_URL }}
+          registry: ${{ vars.ACTIVE_REGISTRY_URL }}
           username: ${{ secrets.ACTIVE_REGISTRY_USER }}
           password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
 
