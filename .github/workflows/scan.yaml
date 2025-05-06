@@ -42,7 +42,7 @@ jobs:
         run: >
           docker run
           --add-host=host.docker.internal:host-gateway
-          -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json
+          -e ACTIVE_CONFIG_FILE_PATH=./././noname/active-config.json
           -e ACTIVE_OVERRIDES_FILE_PATH=/noname/overrides.json
           -v $(pwd)/noname:/noname
           ${{vars.ACTIVE_REGISTRY_URL}}/active-cli:2.34.1 scan
