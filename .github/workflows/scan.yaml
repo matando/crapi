@@ -38,6 +38,7 @@ jobs:
           username: ${{ secrets.ACTIVE_REGISTRY_USER }}
           password: ${{ secrets.ACTIVE_REGISTRY_PASSWORD }}
       - name: troubleshoot
+        run:
           pwd
           cat /noname/active-config.json
       - name: Active Testing Scan
