@@ -43,13 +43,4 @@ jobs:
           cat /noname/active-config.json
       - name: Active Testing Scan
         run: >
-          docker run
-          --add-host=host.docker.internal:host-gateway
-          -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json
-          -v $(pwd)/noname:/noname
-          ${{vars.ACTIVE_REGISTRY_URL}}/active-cli:2.34.1 scan
-          --api-url=${{ vars.ACTIVE_API_URL }}
-          --api-token=${{ secrets.ACTIVE_API_TOKEN }}
-          --test-group-id=${{ env.TEST_GROUP_ID }}
-          --branch-name=${{ github.head_ref || github.ref_name }}
-          --severity-threshold=none
+          docker run --add-host=host.docker.internal:host-gateway -e ACTIVE_CONFIG_FILE_PATH=/noname/active-config.json -v $(pwd)/noname:/noname ${{vars.ACTIVE_REGISTRY_URL}}/active-cli:2.35.0 scan --api-url=${{ vars.ACTIVE_API_URL }} --api-token=${{ secrets.ACTIVE_API_TOKEN }} --test-group-id=${{ env.TEST_GROUP_ID }} --branch-name=${{ github.head_ref || github.ref_name }} --severity-threshold=none
